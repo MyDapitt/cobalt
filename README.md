@@ -1,2 +1,3 @@
 # cobalt
-*BAB 1*
+*Information :*
+_AI_ Chat  ~Power by: AI Studio~
