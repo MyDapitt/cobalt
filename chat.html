@@ -477,36 +477,24 @@
     </main>
 </body>
 <script>
-    document.getElementById('sendButton').addEventListener('click', function() {
-    const input = document.getElementById('chatInput').value;
-    if (input) {
-        displayMessage(input, 'user-message');
-        document.getElementById('chatInput').value = ''; // Clear input
-        fetchData();
+    let serverUrl = '';
+    // Function to load server URL from data.txt
+    function loadServerUrl() {
+        fetch('data.txt')
+            .then(response => response.text())
+            .then(data => {
+                serverUrl = data.trim(); // Store the server URL
+                console.log("Server URL loaded:", serverUrl);
+            })
+            .catch(error => console.error('Error loading server URL:', error));
     }
-});
-
-function displayMessage(message, className) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${className}`;
-    messageDiv.textContent = message;
-    document.getElementById('chatArea').appendChild(messageDiv);
-}
-
-function fetchData() {
-    fetch('data.txt')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(data => {
-            displayMessage(data, 'ai-message');
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
-}
-<script>
+    document.getElementById('sendButton').addEventListener('click', function() {
+        const input = document.getElementById('chatInput').value;
+        if (input && serverUrl) {
+            displayMessage(input, 'user-message');
+            document.getElementById('chatInput').value = ''; // Clear input
+            sendMessageToServer(input);
+        }
+    });
+</script>
 </html>
