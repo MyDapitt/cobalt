@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Menu</title>
+    <title>Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,70 +11,66 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
         }
-        .login-container {
-            background-color: white;
-            border-radius: 10px;
+        .login-box {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
             width: 300px;
-            text-align: center;
         }
-        .login-container h2 {
-            margin-bottom: 1rem;
-            color: #333;
-        }
-        .login-container input {
+        input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 0.5rem;
-            margin: 0.5rem 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .login-container button {
+        button {
             width: 100%;
-            padding: 0.5rem;
-            background-color: #007bff;
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #3498db;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
         }
-        .login-container button:hover {
-            background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            margin-top: 0.5rem;
+        button:hover {
+            background-color: #2980b9;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-box">
         <h2>Login</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
         <button onclick="login()">Login</button>
-        <div id="error" class="error"></div>
+        <p id="message"></p>
     </div>
 
     <script>
-        function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const error = document.getElementById('error');
+        async function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const message = document.getElementById("message");
 
-            if (username === '' || password === '') {
-                error.textContent = 'Username dan password harus diisi';
-                return;
-            }
+            try {
+                const response = await fetch(`https://203b3819-4b0a-4e5a-8bb1-8bd6efb5982f-00-2bfmoamiofv14.pike.replit.dev/api/login?user=${username}&password=${password}`);
+                const result = await response.json();
 
-            // Dummy login validation
-            if (username === 'admin' && password === '1234') {
-                alert('Login berhasil');
-            } else {
-                error.textContent = 'Username atau password salah';
+                if (response.ok) {
+                    message.style.color = "green";
+                    message.textContent = result.message;
+                } else {
+                    message.style.color = "red";
+                    message.textContent = result.message;
+                }
+            } catch (error) {
+                message.style.color = "red";
+                message.textContent = "Error: " + error.message;
             }
         }
     </script>
