@@ -476,4 +476,37 @@
         </div>
     </main>
 </body>
+<script>
+    document.getElementById('sendButton').addEventListener('click', function() {
+    const input = document.getElementById('chatInput').value;
+    if (input) {
+        displayMessage(input, 'user-message');
+        document.getElementById('chatInput').value = ''; // Clear input
+        fetchData();
+    }
+});
+
+function displayMessage(message, className) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${className}`;
+    messageDiv.textContent = message;
+    document.getElementById('chatArea').appendChild(messageDiv);
+}
+
+function fetchData() {
+    fetch('data.txt')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(data => {
+            displayMessage(data, 'ai-message');
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+}
+<script>
 </html>
